@@ -1,0 +1,49 @@
+{
+    // Python settings
+    "python.defaultInterpreterPath": "~/Library/Caches/pypoetry/virtualenvs/poetry-demo-ndodma-py3.13/bin/python",
+    "python.terminal.activateEnvironment": true,
+  
+    // PYTHONPATH for imports
+    "python.envFile": "${workspaceFolder}/.env",
+    "terminal.integrated.env.osx": {
+      "PYTHONPATH": "${workspaceFolder}/src"
+    },
+  
+    // Testing with pytest
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": ["tests"],
+    "python.testing.unittestEnabled": false,
+  
+    // Formatting with Black
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      }
+    },
+  
+    // Editor settings
+    "editor.rulers": [88],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+  
+    // Files
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      ".pytest_cache": true,
+      "*.egg-info": true,
+      ".mypy_cache": true,
+      ".ruff_cache": true
+    },
+  
+    // Search exclusions
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.venv": true,
+      "**/poetry.lock": true
+    }
+  }
+  
+  
