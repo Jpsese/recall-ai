@@ -15,6 +15,6 @@ class Memory(BaseModel):
     id: str
     content: str
     embedding: Embedding
-    timestamp: datetime
+    created_at: datetime
     author: str
     source: Optional[str]
