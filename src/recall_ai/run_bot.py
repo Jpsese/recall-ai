@@ -1,11 +1,12 @@
-import os
 import asyncio
+import os
 
 from dotenv import load_dotenv
-from recall_ai.logging_config import setup_logging
-from recall_ai.bot.client import create_bot
 
-MODULES = ["recall_ai.bot.cogs.basic"]
+from recall_ai.bot.client import create_bot
+from recall_ai.logging_config import setup_logging
+
+MODULES = ["recall_ai.bot.commands.basic"]
 
 
 async def main():
