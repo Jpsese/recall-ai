@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel
@@ -23,12 +22,10 @@ class MemoryStore:
         self, content: str, author: str, source: Optional[str], embedding: Embedding
     ) -> Memory:
         id = str(uuid.uuid4())
-        created_at = datetime.now()
 
         memory = Memory(
             id=id,
             author=author,
-            created_at=created_at,
             content=content,
             source=source,
             embedding=embedding,

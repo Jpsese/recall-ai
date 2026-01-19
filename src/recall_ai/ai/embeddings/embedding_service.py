@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from sentence_transformers import SentenceTransformer
 
 from recall_ai.ai.memory.models import Embedding
@@ -18,11 +16,8 @@ class EmbeddingService:
         embeddings = self.model.encode(text)
         dimension = embeddings.shape[0]
         vector = embeddings.tolist()
-        created_at = datetime.now()
-
         return Embedding(
             vector=vector,
             dimension=dimension,
-            created_at=created_at,
             model_name=self.model_name,
         )
