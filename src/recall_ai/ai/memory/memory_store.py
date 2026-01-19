@@ -13,7 +13,7 @@ class MemoryLookup(BaseModel):
 
 
 class MemoryStore:
-    def __init__(self, min_score=0.90, limit=5):
+    def __init__(self, min_score=0.5, limit=5):
         self.memory_list: list[Memory] = []
         self.min_score = min_score
         self.limit = limit
@@ -39,7 +39,8 @@ class MemoryStore:
         query_vector = query_embedding.vector
         for memory in self.memory_list:
             memory_vector = memory.embedding.vector
-            score = util.cos_sim(memory_vector, query_vector)
+            score = util.cos_sim([query_vector], [memory_vector])
+            print(f"whats the score {score}")
             if score >= self.min_score:
                 memory_lookups.append(MemoryLookup(score=score, memory=memory))
 
