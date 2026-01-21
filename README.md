@@ -1,161 +1,187 @@
-# Recall-AI
+# 🧠 Recall-AI
 
-A Discord bot with AI-powered memory capabilities. Recall-AI uses sentence transformers to create embeddings and store memories, allowing for intelligent recall and context-aware interactions.
+**Recall-AI is a personal semantic memory system that helps you ingest your own knowledge (documents, notes, messages) and retrieve it later by meaning — not keywords.**
 
-## Features
+It is designed as **AI infrastructure**, not a chatbot.
 
-- 🤖 **Discord Bot** - Interactive bot with command support
-- 🧠 **AI Memory** - Store and recall information using embeddings
-- 🚀 **FastAPI Backend** - RESTful API for data ingestion
-- 📝 **Sentence Transformers** - State-of-the-art text embeddings
+---
 
-## Prerequisites
+## ✨ Motivation
 
-- Python 3.12 or higher (< 3.14)
-- [Poetry](https://python-poetry.org/docs/#installation) for dependency management
-- A Discord Bot Token ([How to create a Discord bot](https://discord.com/developers/applications))
+As engineers, we constantly write:
+- AWS notes
+- architecture decisions
+- runbooks
+- design explanations
+- personal documentation
 
-## Installation
+Over time, this knowledge:
+- becomes fragmented
+- gets forgotten
+- is hard to search unless you remember exact words
 
-### 1. Clone the repository
+**Recall-AI solves this by acting as a semantic second brain for technical knowledge you’ve already written.**
 
-```bash
-git clone https://github.com/yourusername/recall-ai.git
-cd recall-ai
-```
+---
 
-### 2. Install Poetry (if not already installed)
+## 🎯 Product Goals
 
-```bash
-# macOS / Linux
-curl -sSL https://install.python-poetry.org | python3 -
+Recall-AI focuses on **knowledge recall**, not generation.
 
-# Or with Homebrew (macOS)
-brew install poetry
-```
+### What it does
+- Ingests documents you wrote (Markdown, PDF, text, etc.)
+- Converts them into embeddings
+- Stores them in a vector memory
+- Retrieves relevant knowledge using semantic search
+- Returns grounded results with clear sources
 
-### 3. Install dependencies
+### What it does NOT do
+- Auto-reply to conversations
+- Replace human decision-making
+- Hallucinate answers from the internet
+- Act as a helpdesk or support bot
 
-```bash
-poetry install
-```
+---
 
-### 4. Set up environment variables
+## 🧠 Core AI Concepts
 
-Create a `.env` file in the project root:
+Recall-AI is built around **modern AI system primitives**, not prompt tricks.
 
-```bash
-cp .env.example .env
-```
+### Embeddings
+- Text is converted into dense vector representations
+- Embeddings capture semantic meaning
+- Model-agnostic design (local models now, hosted APIs later)
 
-Then edit `.env` with your credentials:
+### Vector Search
+- Knowledge is stored as vectors
+- Retrieval is done via similarity search (cosine / dot-product)
+- Enables meaning-based lookup instead of keyword matching
 
-```env
-DISCORD_TOKEN=your_discord_bot_token_here
-```
+### Reranking
+- Initial retrieval returns candidate chunks
+- A reranker reorders results for higher relevance
+- Improves precision for technical lookups
 
-### 5. Activate the virtual environment
+### RAG (Retrieval-Augmented Generation)
+- Retrieved memories can be passed to an LLM
+- Answers are grounded strictly in user-provided sources
+- Source attribution is mandatory
 
-```bash
-poetry shell
-```
+> RAG is a **consumer of memory**, not the core product.
 
-## Usage
+---
 
-### Running the Discord Bot
+## 📦 Core Features (MVP)
 
-```bash
-make run-bot
-```
+### 1️⃣ Document Ingestion
+Recall-AI can ingest:
+- Markdown files
+- Plain text
+- PDFs
+- Other document formats (future)
 
-Or manually:
+Ingestion includes:
+- Chunking documents into semantically meaningful units
+- Attaching metadata (source, file name, timestamp)
+- Indexing content into vector memory
 
-```bash
-PYTHONPATH=src poetry run python src/recall_ai/run_bot.py
-```
+Planned ingestion sources:
+- Notion
+- External APIs
+- Knowledge bases
 
-### Running the API Server
+---
 
-```bash
-make run-api
-```
+### 2️⃣ Semantic Lookup (Killer Feature)
+Users can:
+- Search their own documents using natural language
+- Retrieve relevant sections instead of full files
+- Find forgotten explanations or decisions
 
-Or manually:
+Example:
+> “How did I explain IAM role chaining before?”
 
-```bash
-PYTHONPATH=src poetry run uvicorn recall_ai.api.server:create_app --factory --reload
-```
+---
 
-The API will be available at `http://localhost:8000`
+### 3️⃣ Memory Store
+Recall-AI maintains a memory layer that:
+- Stores embeddings and metadata
+- Supports similarity search
+- Is independent from ingestion sources
+- Can evolve from in-memory to persistent storage
 
-### API Endpoints
+---
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/ingest` | POST | Ingest text for processing |
+### 4️⃣ Reranking
+- Retrieved results are reranked for relevance
+- Especially useful for long documents and overlapping topics
+- Improves answer quality before RAG
 
-## Bot Commands
+---
 
-| Command | Description |
-|---------|-------------|
-| `!ping` | Check if the bot is working |
-| `!status` | Show bot uptime |
-| `!save` | Save a memory |
+### 5️⃣ RAG Answering (Optional)
+Recall-AI can:
+- Answer questions using retrieved memories
+- Clearly show sources used
+- Avoid hallucinations by restricting context
 
-## Development
+RAG is **explicit and opt-in**.
 
-### Running Tests
+---
 
-```bash
-PYTHONPATH=src poetry run pytest tests/ -v
-```
+## 🧩 Interfaces
 
-### Code Formatting
+Recall-AI is **interface-agnostic**.
 
-```bash
-poetry run black src/ tests/
-```
+Possible interfaces:
+- CLI (first-class)
+- Discord bot
+- Slack bot
+- HTTP API
 
-### Project Structure
+All interfaces perform the same actions:
+- Ingest knowledge
+- Query memory
+- Inspect stored information
 
-```
-recall-ai/
-├── src/
-│   └── recall_ai/
-│       ├── ai/
-│       │   ├── embeddings/      # Embedding service
-│       │   ├── memory/          # Memory storage
-│       │   └── vectorstore.py   # Vector operations
-│       ├── api/
-│       │   └── server.py        # FastAPI application
-│       ├── bot/
-│       │   ├── client.py        # Discord bot client
-│       │   └── commands/        # Bot commands
-│       ├── logging_config.py
-│       └── run_bot.py           # Bot entry point
-├── tests/
-├── pyproject.toml
-├── Makefile
-└── README.md
-```
+---
 
-## VSCode Setup
+## 🔍 Observability
 
-This project includes VSCode configuration files in `.vscode/`:
+Recall-AI exposes:
+- Number of indexed documents
+- Embedding model in use
+- Vector dimensions
+- Memory size
+- Retrieval latency
 
-- **settings.json** - Python interpreter, formatting, and editor settings
-- **launch.json** - Debug configurations for API and bot
-- **extensions.json** - Recommended extensions
+This reinforces that it is a **real system**, not a demo.
 
-### Recommended Extensions
+---
 
-- Python (ms-python.python)
-- Black Formatter (ms-python.black-formatter)
-- Ruff (charliermarsh.ruff)
-- Even Better TOML (tamasfe.even-better-toml)
+## 🚀 Advanced / Learning-Focused Features (Future)
 
-## License
+These features deepen AI engineering understanding:
+- Memory importance scoring
+- Recency-based decay
+- Document clustering
+- Knowledge summarization
+- Topic emergence detection
+- Hybrid search (semantic + keyword)
+- Multi-source retrieval
 
-MIT
+---
 
+## 🧑‍💻 Why This Project Matters
+
+Recall-AI demonstrates:
+- Deep understanding of embeddings and vector search
+- Clean AI system design
+- Separation of ingestion, memory, retrieval, and generation
+- Model-agnostic architecture
+- Practical RAG implementation
+- Real-world knowledge management use cases
+
+This is **AI engineering**, not prompt engineering.
+
+---
