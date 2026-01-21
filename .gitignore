@@ -6,7 +6,7 @@ __pycache__/
 # Virtual environments
 .venv/
 .env
-.env.*
+
 
 # Poetry caches
 .venv*/
@@ -37,3 +37,6 @@ htmlcov/
 # Uvicorn
 *.pid
 
+# ChromaDB data
+data/chroma/
+*.sqlite3
